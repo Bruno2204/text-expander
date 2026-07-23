@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Expander</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <span class="logo-icon">⚡</span>
+          <h1 class="logo-text">Text Expander</h1>
+        </div>
+        <div class="badge" id="shortcutCount">0</div>
+      </div>
+    </header>
+
+    <!-- Search -->
+    <div class="search-container">
+      <div class="search-wrapper">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar atajos...">
+        <button id="clearSearch" class="clear-btn hidden" title="Limpiar búsqueda">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Shortcut List -->
+    <div class="list-container" id="listContainer">
+      <div class="empty-state hidden" id="emptyState">
+        <span class="empty-icon">📝</span>
+        <p class="empty-text">No se encontraron atajos</p>
+      </div>
+      <div class="shortcut-list" id="shortcutList"></div>
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="footer">
+      <div class="footer-actions">
+        <button class="footer-btn" id="importBtn" title="Importar atajos">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span>Importar</span>
+        </button>
+        <button class="footer-btn" id="exportBtn" title="Exportar atajos">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <span>Exportar</span>
+        </button>
+      </div>
+      <button class="add-btn" id="addBtn" title="Agregar atajo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Add / Edit Modal -->
+    <div class="modal-overlay hidden" id="modalOverlay">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 class="modal-title" id="modalTitle">Agregar Atajo</h2>
+          <button class="modal-close" id="modalClose">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="shortcutCode">Código del atajo</label>
+            <input type="text" id="shortcutCode" class="form-input" placeholder="Ej: s1" autocomplete="off">
+            <span class="form-hint">Escribe este código + espacio para expandir</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="shortcutText">Texto expandido</label>
+            <textarea id="shortcutText" class="form-textarea" placeholder="Ej: Hola, soy Bruno y estaré encantado de poder ayudarte." rows="5"></textarea>
+          </div>
+          <div class="form-error hidden" id="formError"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-cancel" id="modalCancel">Cancelar</button>
+          <button class="btn btn-save" id="modalSave">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay hidden" id="deleteOverlay">
+      <div class="modal modal-sm">
+        <div class="modal-header">
+          <h2 class="modal-title">Eliminar atajo</h2>
+        </div>
+        <div class="modal-body">
+          <p class="delete-message">¿Estás seguro de que deseas eliminar el atajo <strong id="deleteCode"></strong>?</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-cancel" id="deleteCancel">Cancelar</button>
+          <button class="btn btn-delete" id="deleteConfirm">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast hidden" id="toast">
+      <span class="toast-icon" id="toastIcon">✓</span>
+      <span class="toast-message" id="toastMessage"></span>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
